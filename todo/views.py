@@ -147,8 +147,8 @@ class TodoViewSet(ModelViewSet):
     queryset = Todo.objects.order_by('priority')
     serializer_class = TodoSerializer
     pagination_class = TodoViewSetPagination
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 
 class UserListView(ListAPIView):
