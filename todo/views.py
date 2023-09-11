@@ -9,6 +9,7 @@ from rest_framework.generics import *
 from rest_framework.mixins import *
 from rest_framework.viewsets import *
 from django.contrib.auth import get_user_model
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 
 
 # @api_view(['GET', 'POST'])
@@ -127,6 +128,7 @@ class TodoDetailUpdateDeleteMixinView(RetrieveModelMixin, UpdateModelMixin, Dest
 class TodoListCreateConcreteView(ListCreateAPIView):
     queryset = Todo.objects.order_by('priority')
     serializer_class = TodoSerializer
+    pagination_class = LimitOffsetPagination
 
 
 class TodoDetailUpdateDeleteConcreteView(RetrieveUpdateDestroyAPIView):
@@ -135,9 +137,14 @@ class TodoDetailUpdateDeleteConcreteView(RetrieveUpdateDestroyAPIView):
     lookup_url_kwarg = 'todo_id'
 
 
+class TodoViewSetPagination(PageNumberPagination):
+    page_size = 1
+
+
 class TodoViewSet(ModelViewSet):
     queryset = Todo.objects.order_by('priority')
     serializer_class = TodoSerializer
+    pagination_class = TodoViewSetPagination
 
 
 class UserListView(ListAPIView):
