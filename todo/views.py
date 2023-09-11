@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import *
 from .serializers import *
+from rest_framework.generics import *
+from rest_framework.mixins import *
+from rest_framework.viewsets import *
 
 
 # @api_view(['GET', 'POST'])
@@ -92,3 +95,45 @@ class TodoDetailUpdateDeleteView(APIView):
     def delete(self, request: Request, *args, **kwargs):
         self.instance_todo.delete()
         return Response(data=None, status=status.HTTP_204_NO_CONTENT)
+
+
+class TodoListCreateMixinView(ListModelMixin, CreateModelMixin, GenericAPIView):
+    queryset = Todo.objects.order_by('priority')
+    serializer_class = TodoSerializer
+
+    def get(self, request: Request):
+        return self.list(request)
+
+    def post(self, request: Request):
+        return self.create(request)
+
+
+class TodoDetailUpdateDeleteMixinView(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+    queryset = Todo.objects.order_by('priority')
+    serializer_class = TodoSerializer
+    lookup_url_kwarg = 'todo_id'
+
+    def get(self, request: Request, todo_id):
+        return self.retrieve(request, todo_id)
+
+    def put(self, request: Request, todo_id):
+        return self.update(request, todo_id)
+
+    def delete(self, request: Request, todo_id):
+        return self.destroy(request, todo_id)
+
+
+class TodoListCreateConcreteView(ListCreateAPIView):
+    queryset = Todo.objects.order_by('priority')
+    serializer_class = TodoSerializer
+
+
+class TodoDetailUpdateDeleteConcreteView(RetrieveUpdateDestroyAPIView):
+    queryset = Todo.objects.order_by('priority')
+    serializer_class = TodoSerializer
+    lookup_url_kwarg = 'todo_id'
+
+
+class TodoViewSet(ModelViewSet):
+    queryset = Todo.objects.order_by('priority')
+    serializer_class = TodoSerializer
