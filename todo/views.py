@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
@@ -61,6 +62,11 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class TodoListCreateView(APIView):
+    @extend_schema(
+        request=TodoSerializer,
+        responses={201: TodoSerializer},
+        description='this is TodoViewSet'
+    )
     def get(self, request: Request):
         todos = Todo.objects.order_by('priority')
         todo_serializer = TodoSerializer(instance=todos, many=True)
