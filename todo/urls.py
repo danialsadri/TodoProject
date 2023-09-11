@@ -15,5 +15,6 @@ urlpatterns = [
     path('detail_update_delete_mixin/<int:todo_id>/', views.TodoDetailUpdateDeleteMixinView.as_view()),
     path('todo_list_create_concrete/', views.TodoListCreateConcreteView.as_view()),
     path('todo_detail_update_delete_concrete/<int:todo_id>/', views.TodoDetailUpdateDeleteConcreteView.as_view()),
+    path('users/', views.UserListView.as_view()),
     path('viewset/', include(router.urls)),
 ]

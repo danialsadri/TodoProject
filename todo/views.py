@@ -8,6 +8,7 @@ from .serializers import *
 from rest_framework.generics import *
 from rest_framework.mixins import *
 from rest_framework.viewsets import *
+from django.contrib.auth import get_user_model
 
 
 # @api_view(['GET', 'POST'])
@@ -137,3 +138,8 @@ class TodoDetailUpdateDeleteConcreteView(RetrieveUpdateDestroyAPIView):
 class TodoViewSet(ModelViewSet):
     queryset = Todo.objects.order_by('priority')
     serializer_class = TodoSerializer
+
+
+class UserListView(ListAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
