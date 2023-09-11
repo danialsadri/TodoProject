@@ -10,6 +10,8 @@ from rest_framework.mixins import *
 from rest_framework.viewsets import *
 from django.contrib.auth import get_user_model
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 # @api_view(['GET', 'POST'])
@@ -145,6 +147,8 @@ class TodoViewSet(ModelViewSet):
     queryset = Todo.objects.order_by('priority')
     serializer_class = TodoSerializer
     pagination_class = TodoViewSetPagination
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class UserListView(ListAPIView):
